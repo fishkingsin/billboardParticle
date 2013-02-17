@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+.DS_Store
+
+bin/data/dot_.png
+
+bin/data/dot 2.png
