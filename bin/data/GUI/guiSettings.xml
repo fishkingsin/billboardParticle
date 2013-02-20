@@ -1,38 +1,58 @@
 <Widget>
     <Kind>4</Kind>
     <Name>NOISE_STRENGTH</Name>
-    <Value>0.953974903</Value>
+    <Value>0.979079485</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>NOISE_POWER</Name>
-    <Value>0.928870320</Value>
+    <Value>0.945606709</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>AGING</Name>
-    <Value>0.510460258</Value>
+    <Value>0.338912129</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>COLOR_CHANGE</Name>
-    <Value>47.489540100</Value>
+    <Value>184.100418091</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>EMITTER_NOISE_STRENGTH</Name>
-    <Value>12.133891106</Value>
+    <Value>1024.000000000</Value>
 </Widget>
 <Widget>
     <Kind>6</Kind>
     <Name>PARTICLE_SIZE</Name>
-    <HighValue>114.163177490</HighValue>
-    <LowValue>45.878662109</LowValue>
+    <HighValue>66.100456238</HighValue>
+    <LowValue>2.400000572</LowValue>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>BG_COLOR_RED</Name>
+    <Value>24.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>BG_COLOR_BLUE</Name>
+    <Value>4.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>BG_COLOR_GREEN</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>BG_COLOR_ALPHA</Name>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>AUTO_EMITT</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

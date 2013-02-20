@@ -4,6 +4,7 @@
 void testApp::setup() {
     ofSetBackgroundAuto(false);
     ofSetFrameRate(60);
+//	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofBackground(0, 0, 0);
 	
 	cameraRotation.set(0);
@@ -22,7 +23,7 @@ void testApp::setup() {
         age[i]= 0;//ofRandom(0.5,1.0);
 		billboards.getColors()[i].set(ofColor::fromHsb(i%255, 255, 255));
 	    billboardSizeTarget[i] = ofRandom(4, 64);
-		
+		billboardNormal[i] = ofVec3f(100,0,0);
 	}
 	
 	
@@ -54,23 +55,103 @@ void testApp::setup() {
     gui->setDrawPaddingOutline(true);
     gui->setDrawBack(true);
     gui->setColorBack(ofColor(125,125,125,125));
-    
+    gui->addFPS();
+	
     gui->addSlider("NOISE_STRENGTH", 0.0, 1.0f, noiseStrength, length-xInit, dim);
     gui->addSlider("NOISE_POWER", 0.0, 1.0f, noisePower, length-xInit, dim);
     gui->addSlider("AGING", 0.0, 1.0f ,  aging, length-xInit, dim);
-    gui->addSlider("COLOR_CHANGE", 0.0, 50.0f ,  colorChange, length-xInit, dim);
-    gui->addSlider("EMITTER_NOISE_STRENGTH", 0.0, 100.0f ,  50, length-xInit, dim);
+    gui->addSlider("COLOR_CHANGE", 0.0, 2000.0f ,  colorChange, length-xInit, dim);
+    gui->addSlider("EMITTER_NOISE_STRENGTH", 0.0, ofGetWidth() ,  ofGetWidth()*0.5, length-xInit, dim);
     
     gui->addRangeSlider("PARTICLE_SIZE", 0.0, 255.0, 50.0, 100.0, length-xInit,dim);
+	gui->addSlider("BG_COLOR_RED", 0.0f, 255.0 ,  0.0f, length-xInit, dim);
+	gui->addSlider("BG_COLOR_BLUE", 0.0f, 255.0 ,  0.0f, length-xInit, dim);
+	gui->addSlider("BG_COLOR_GREEN", 0.0f, 255.0 ,  0.0f, length-xInit, dim);
+	gui->addSlider("BG_COLOR_ALPHA", 0.0f, 255.0 ,  0.0f, length-xInit, dim);
     gui->addToggle( "AUTO_EMITT", false, dim, dim);
     gui->addToggle( "RECORD", false, dim, dim);
 
     
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
     gui->loadSettings("GUI/guiSettings.xml");
+	
+	duration.setup(12345);
+	ofAddListener(duration.events.trackUpdated, this, &testApp::trackUpdated);
     
 }
-
+//--------------------------------------------------------------
+//Or wait to receive messages, sent only when the track changed
+void testApp::trackUpdated(ofxDurationEventArgs& args){
+	ofLogVerbose("Duration Event") << "track type " << args.track->type << " updated with name " << args.track->name << " and value " << args.track->value << endl;
+	if(args.track->name=="/NOISE_STRENGTH")
+    {
+        noiseStrength = args.track->value;
+		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    }
+    else if(args.track->name=="/NOISE_POWER")
+    {
+        noisePower = args.track->value;
+		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    }
+    else if(args.track->name=="/AGING")
+    {
+        aging = args.track->value;
+		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    }
+    else if(args.track->name=="/AUTO_EMITT")
+    {
+        autoEmitt = args.track->on;
+		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->on);
+    }
+    else if(args.track->name=="/RECORD")	
+    {
+        bRecord = args.track->on;
+		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->on);
+    }
+    
+    else if(args.track->name=="/COLOR_CHANGE")
+    {
+        colorChange = args.track->value;
+		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    }
+    
+    else if(args.track->name=="/PARTICLE_SIZE_MAX")
+    {
+		
+        particleSizeMax = args.track->value;
+		ofxUIRangeSlider* slider = (ofxUIRangeSlider*)gui->getWidget("PARTICLE_SIZE");
+		if(slider)slider->setValueHigh(args.track->value);
+		
+	}
+	else if(args.track->name=="/PARTICLE_SIZE_MIN")
+	{
+        particleSizeMin = args.track->value;
+		ofxUIRangeSlider* slider = (ofxUIRangeSlider*)gui->getWidget("PARTICLE_SIZE");
+		if(slider)slider->setValueLow(args.track->value);
+		
+    }
+    else if(args.track->name=="/EMITTER_NOISE_STRENGTH")
+    {
+        noiseEmitterStrength = args.track->value;
+		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    }
+	else if(args.track->name=="/BG_COLOR")
+	{
+		bgColor = args.track->color;
+		((ofxUISlider*)gui->getWidget("BG_COLOR_RED"))->setValue(bgColor.r);
+		((ofxUISlider*)gui->getWidget("BG_COLOR_GREEN"))->setValue(bgColor.g);
+		((ofxUISlider*)gui->getWidget("BG_COLOR_BLUE"))->setValue(bgColor.b);
+		((ofxUISlider*)gui->getWidget("BG_COLOR_ALPHA"))->setValue(bgColor.a);
+		
+	}
+	else if(args.track->name=="/BG_COLOR_ALPHA")
+	{
+		bgColor.a = args.track->value;
+		((ofxUISlider*)gui->getWidget("BG_COLOR_ALPHA"))->setValue(bgColor.a);
+	}
+	
+	
+}
 void testApp::exit()
 {
     gui->saveSettings("GUI/guiSettings.xml");
@@ -116,6 +197,26 @@ void testApp::guiEvent(ofxUIEventArgs &e)
         noiseEmitterStrength = ((ofxUISlider*)e.widget)->getScaledValue();
 
     }
+	else if(e.widget->getName()=="BG_COLOR_RED")
+	{
+		bgColor.r = ((ofxUISlider*)e.widget)->getScaledValue();
+
+	}
+	else if(e.widget->getName()=="BG_COLOR_BLUE")
+	{
+		bgColor.b = ((ofxUISlider*)e.widget)->getScaledValue();
+		
+	}
+	else if(e.widget->getName()=="BG_COLOR_GREEN")
+	{
+		bgColor.g = ((ofxUISlider*)e.widget)->getScaledValue();
+		
+	}
+	else if(e.widget->getName()=="BG_COLOR_ALPHA")
+	{
+		bgColor.a = ((ofxUISlider*)e.widget)->getScaledValue();
+		
+	}
     
     
     
@@ -126,29 +227,29 @@ void testApp::update() {
 	float t = (ofGetElapsedTimef()) * noisePower;
 	float div = 250.0;
 	float cur = ofGetElapsedTimef();
-    ofVec3f v (ofSignedNoise(t, emitter.y/ofGetHeight()*0.5)*noiseEmitterStrength,
-               ofSignedNoise(emitter.x/ofGetWidth()*0.5, t)*noiseEmitterStrength);
+    ofVec3f v (ofSignedNoise(t, emitter.y/ofGetHeight()*0.5)*noiseEmitterStrength,ofSignedNoise(emitter.x/ofGetWidth()*0.5, t)*noiseEmitterStrength);
+//	ofVec3f v(ofSignedNoise(t,ofGetWidth()*0.5), ofSignedNoise(ofGetHeight()*0.5, t));
 
-    emitter+=v;
-    if(emitter.x < -(emitterTex.width*0.5)-ofGetWidth()*0.5)
+    emitter+=(v-emitter)*0.01;
+    if(emitter.x < -(particleSizeMax*0.5)-ofGetWidth()*0.5)
     {
-        emitter-=v*2;
-//        emitter.x = ofGetWidth()*0.5;
+//        emitter-=v*2;
+        emitter.x = ofGetWidth()*0.5;
         
-    }else if(emitter.y < -(emitterTex.width*0.5)-ofGetHeight()*0.5)
+    }else if(emitter.y < -(particleSizeMax*0.5)-ofGetHeight()*0.5)
     {
-        emitter-=v*2;
-//        emitter.y = ofGetHeight()*0.5;
+//        emitter-=v*2;
+        emitter.y = ofGetHeight()*0.5;
         
-    }else if(emitter.x > -(emitterTex.width*0.5)+ofGetWidth()*0.5)
+    }else if(emitter.x > -(particleSizeMax*0.5)+ofGetWidth()*0.5)
     {
-        emitter-=v*2;
-//        emitter.x = -ofGetWidth()*0.5;
+//        emitter-=v*2;
+        emitter.x = -ofGetWidth()*0.5;
         
-    }else if(emitter.y > -(emitterTex.width*0.5)+ofGetHeight()*0.5)
+    }else if(emitter.y > -(particleSizeMax*0.5)+ofGetHeight()*0.5)
     {
-        emitter-=v*2;
-//        emitter.y = -ofGetHeight()*0.5;
+//        emitter-=v*2;
+        emitter.y = -ofGetHeight()*0.5;
     }
     
 	for (int i=0; i<billboards.getNumVertices(); i++) {
@@ -164,7 +265,8 @@ void testApp::update() {
             billboardVels[i] += vec;
             billboards.getVertices()[i] += billboardVels[i];
             billboardVels[i] *= 0.99f;
-            //            billboards.setNormal(i,ofVec3f(100, 0,0));//+ billboardSizeTarget[i] * ofNoise(t+i),0,0));
+//			billboards.setNormal(i,billboards.getNormal(i)*age[i]);//+ billboardSizeTarget[i] * ofNoise(t+i),0,0));
+			billboards.setNormal(i,billboardNormal[i]*age[i]);
             billboards.getColors()[i].set(ofColor(billboards.getColors()[i],age[i]*255));
             
             age[i]-=(cur-past)*aging ;
@@ -175,10 +277,12 @@ void testApp::update() {
             if(autoEmitt)
             {
                 billboardVels[i].set(ofRandom(emitter.x-pEmitter.x), ofRandom(emitter.y-pEmitter.y) , ofRandom(-10,10) );
-                billboards.getVertices()[i].set(emitter.x+emitterTex.getWidth()*0.5,emitter.y+emitterTex.getHeight()*0.5,0);
+                billboards.getVertices()[i].set(emitter.x+particleSizeMax*0.5,emitter.y+particleSizeMax*0.5,0);
                 age[i]= ofRandom(0.1,1.0);
                 billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*colorChange)%255, 255, 255,age[i]*255));
-                billboards.setNormal(i,ofVec3f(ofRandom(particleSizeMin, particleSizeMax),0,0));
+				billboardNormal[i]= ofVec3f(ofRandom(particleSizeMin, particleSizeMax));
+				billboards.setNormal(i,billboardNormal[i]);
+
             }
         }
     }
@@ -189,7 +293,7 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-    ofClear(0,0,0.01);
+    ofBackground(bgColor);
     
     ofEnableBlendMode(OF_BLENDMODE_ADD);
     //	ofBackgroundGradient(ofColor(255), ofColor(230, 240, 255));
@@ -217,12 +321,13 @@ void testApp::draw() {
     ofDisablePointSprites();
     
     billboardShader.end();
-        emitterTex.draw(emitter);
+        emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
     ofPopMatrix();
 
     if(bRecord)
         ofSaveFrame();
     //    gui->draw();
+	if(gui->isVisible()	)duration.draw(ofGetWidth()*0.25, 0, ofGetWidth()*0.25,ofGetHeight());
 }
 
 //--------------------------------------------------------------
@@ -231,7 +336,11 @@ void testApp::keyPressed(int key){
     if(key == 'f') ofToggleFullscreen();
     if(key == OF_KEY_UP) zoomTarget +=10;
     if(key == OF_KEY_DOWN) zoomTarget -=10;
-    if(key == '\t')gui->toggleVisible();
+    if(key == '\t')
+	{
+		gui->toggleVisible();
+
+	}
     if(key == 'a')autoEmitt = !autoEmitt;
 }
 
@@ -248,6 +357,8 @@ void testApp::mouseMoved(int x, int y){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
+	if(autoEmitt)
+		return;
     int eachTime = ofRandom(50,100);
     int particlesCount=0;
     for (int i=0; i<billboards.getNumVertices(); i++)
@@ -260,7 +371,8 @@ void testApp::mouseDragged(int x, int y, int button){
             billboards.getVertices()[i].set(mouseX-ofGetWidth()*0.5,mouseY-ofGetHeight()*0.5,0);
             billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*colorChange)%255, 255, 255,age            [i]*255));
             age[i]= ofRandom(0.1,1.0);
-            billboards.setNormal(i,ofVec3f(ofRandom(particleSizeMin, particleSizeMax),0,0));
+            billboardNormal[i]= ofVec3f(ofRandom(particleSizeMin, particleSizeMax));
+			billboards.setNormal(i,billboardNormal[i]);
             particlesCount++;
             if(particlesCount>eachTime)
             {

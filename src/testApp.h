@@ -2,8 +2,9 @@
 #include "ofMain.h"
 #include "ofVbo.h"
 
-#define NUM_BILLBOARDS 10000
+#define NUM_BILLBOARDS 50000
 #include "ofxUI.h"
+#include "ofxDuration.h"
 class testApp : public ofBaseApp {
 public:
     void setup();
@@ -31,7 +32,8 @@ public:
     ofImage texture;
     
     ofVboMesh billboards;
-    ofVec3f billboardVels[NUM_BILLBOARDS];
+    ofVec3f billboardVels[NUM_BILLBOARDS],billboardNormal[NUM_BILLBOARDS];
+	
     float age[NUM_BILLBOARDS];
     float past,pX,pY;
     
@@ -45,7 +47,9 @@ public:
     float noiseStrength,noisePower,aging,colorChange,particleSizeMax, particleSizeMin;
     float noiseEmitterStrength;
     bool autoEmitt,bRecord;
-    
+    ofColor bgColor;
+	ofxDuration duration;
+	void trackUpdated(ofxDurationEventArgs& args);
 };
 
 
