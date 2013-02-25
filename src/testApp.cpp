@@ -2,6 +2,10 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
+#ifdef USE_SYPHON
+	server.setName("billboardParticle");
+//	fbo.allocate(1024,768);
+#endif
     ofSetBackgroundAuto(false);
     ofSetFrameRate(60);
 //	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -96,7 +100,7 @@ void testApp::setup() {
 	duration.setup(12345);
 	ofAddListener(duration.events.trackUpdated, this, &testApp::trackUpdated);
 	
-	    
+
 }
 //--------------------------------------------------------------
 //Or wait to receive messages, sent only when the track changed
@@ -321,6 +325,8 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
+//	fbo.begin();
+	ofClear(0);
     ofBackground(bgColor);
     
     ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -354,9 +360,10 @@ void testApp::draw() {
         emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
 //    ofPopMatrix();
 	post.end();
-
+//	fbo.end();
+//	fbo.draw(0, 0);
     if(bRecord)
-        ofSaveFrame();
+        server.publishTexture(&post.getProcessedTextureReference());
     //    gui->draw();
 	if(gui->isVisible()	)duration.draw(ofGetWidth()*0.5, 0, ofGetWidth()*0.25,ofGetHeight());
 }

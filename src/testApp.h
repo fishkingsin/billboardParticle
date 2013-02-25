@@ -6,6 +6,10 @@
 #include "ofxUI.h"
 #include "ofxDuration.h"
 #include "ofxPostProcessing.h"
+#define USE_SYPHON
+#ifdef USE_SYPHON
+#include "ofxSyphon.h"
+#endif
 class testApp : public ofBaseApp {
 public:
     void setup();
@@ -54,6 +58,10 @@ public:
 	
 	ofxPostProcessing post;
 	ofEasyCam cam;
+	#ifdef USE_SYPHON
+	ofxSyphonServer server;
+//	ofFbo fbo;
+#endif
 };
 
 
