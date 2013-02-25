@@ -46,12 +46,12 @@ void testApp::setup() {
     emitter.set(0, 0);
     emitterTex.loadImage("emitter.png");
     
-    gui = new ofxUICanvas(0, 0, ofGetWidth()*0.25, ofGetHeight());
+    gui = new ofxUICanvas(0, 0, ofGetWidth()*0.5, ofGetHeight());
     
     float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 255-xInit;
+    float length = (ofGetWidth()*0.25)-xInit;
     int dim = 32;
-    gui->addWidgetDown(new ofxUILabel("ParticleRecoder", OFX_UI_FONT_LARGE));
+    gui->addLabel("ParticleRecoder", OFX_UI_FONT_LARGE);
     gui->setDrawPaddingOutline(true);
     gui->setDrawBack(true);
     gui->setColorBack(ofColor(125,125,125,125));
@@ -70,14 +70,33 @@ void testApp::setup() {
 	gui->addSlider("BG_COLOR_ALPHA", 0.0f, 255.0 ,  0.0f, length-xInit, dim);
     gui->addToggle( "AUTO_EMITT", false, dim, dim);
     gui->addToggle( "RECORD", false, dim, dim);
-
-    
+	
+	post.init(ofGetWidth(), ofGetHeight());
+    post.createPass<FxaaPass>()->setEnabled(false);
+    post.createPass<BloomPass>()->setEnabled(false);
+    post.createPass<DofPass>()->setEnabled(false);
+	post.createPass<KaleidoscopePass>()->setEnabled(false);
+    post.createPass<NoiseWarpPass>()->setEnabled(false);
+    post.createPass<PixelatePass>()->setEnabled(false);
+    post.createPass<EdgePass>()->setEnabled(false);
+	ofxUILabel * lable = new ofxUILabel("SHADER",OFX_UI_FONT_LARGE);
+//	gui->addWidgetEastOf (new ofxUISpacer(ofGetWidth()*0.25,0,ofGetWidth()*0.25,100,"SPACER"), "NOISE_STRENGTH");
+	gui->addWidgetEastOf (lable,"NOISE_STRENGTH");
+	for (unsigned i = 0; i < post.size(); ++i)
+    {
+//        gui->addWidgetDown();
+		gui->addWidgetPosition(new ofxUILabelToggle(post[i]->getName(), false, length-xInit),
+						  OFX_UI_WIDGET_POSITION_DOWN,
+						  OFX_UI_ALIGN_RIGHT,
+							   false);
+	}
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
     gui->loadSettings("GUI/guiSettings.xml");
 	
 	duration.setup(12345);
 	ofAddListener(duration.events.trackUpdated, this, &testApp::trackUpdated);
-    
+	
+	    
 }
 //--------------------------------------------------------------
 //Or wait to receive messages, sent only when the track changed
@@ -217,7 +236,16 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 		bgColor.a = ((ofxUISlider*)e.widget)->getScaledValue();
 		
 	}
+	else {
+		for (unsigned i = 0; i < post.size(); ++i)
+		{
     
+			if(post[i]->getName()==e.widget->getName())
+			{
+				post[i]->setEnabled(((ofxUIToggle*)e.widget)->getValue());
+			}
+		}
+    }
     
     
 }
@@ -304,11 +332,13 @@ void testApp::draw() {
     
     ofSetColor(255);
     
-    ofPushMatrix();
-    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
-    ofRotate(cameraRotation.x, 1, 0, 0);
-    ofRotate(cameraRotation.y, 0, 1, 0);
-    ofRotate(cameraRotation.y, 0, 0, 1);
+	
+	post.begin(cam);
+//    ofPushMatrix();
+//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+//    ofRotate(cameraRotation.x, 1, 0, 0);
+//    ofRotate(cameraRotation.y, 0, 1, 0);
+//    ofRotate(cameraRotation.y, 0, 0, 1);
     
     // bind the shader so that wee can change the
     // size of the points via the vert shader
@@ -322,12 +352,13 @@ void testApp::draw() {
     
     billboardShader.end();
         emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
-    ofPopMatrix();
+//    ofPopMatrix();
+	post.end();
 
     if(bRecord)
         ofSaveFrame();
     //    gui->draw();
-	if(gui->isVisible()	)duration.draw(ofGetWidth()*0.25, 0, ofGetWidth()*0.25,ofGetHeight());
+	if(gui->isVisible()	)duration.draw(ofGetWidth()*0.5, 0, ofGetWidth()*0.25,ofGetHeight());
 }
 
 //--------------------------------------------------------------
@@ -342,6 +373,8 @@ void testApp::keyPressed(int key){
 
 	}
     if(key == 'a')autoEmitt = !autoEmitt;
+	unsigned idx = key - '0';
+    if (idx < post.size()) post[idx]->setEnabled(!post[idx]->getEnabled());
 }
 
 

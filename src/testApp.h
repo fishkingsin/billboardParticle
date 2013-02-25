@@ -5,6 +5,7 @@
 #define NUM_BILLBOARDS 50000
 #include "ofxUI.h"
 #include "ofxDuration.h"
+#include "ofxPostProcessing.h"
 class testApp : public ofBaseApp {
 public:
     void setup();
@@ -50,6 +51,9 @@ public:
     ofColor bgColor;
 	ofxDuration duration;
 	void trackUpdated(ofxDurationEventArgs& args);
+	
+	ofxPostProcessing post;
+	ofEasyCam cam;
 };
 
 

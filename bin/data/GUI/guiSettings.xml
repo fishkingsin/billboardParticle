@@ -6,17 +6,17 @@
 <Widget>
     <Kind>4</Kind>
     <Name>NOISE_POWER</Name>
-    <Value>0.945606709</Value>
+    <Value>0.238493726</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>AGING</Name>
-    <Value>0.338912129</Value>
+    <Value>0.125000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>COLOR_CHANGE</Name>
-    <Value>184.100418091</Value>
+    <Value>1325.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,18 +26,18 @@
 <Widget>
     <Kind>6</Kind>
     <Name>PARTICLE_SIZE</Name>
-    <HighValue>66.100456238</HighValue>
-    <LowValue>2.400000572</LowValue>
+    <HighValue>55.436721802</HighValue>
+    <LowValue>10.624995232</LowValue>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>BG_COLOR_RED</Name>
-    <Value>24.000000000</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>BG_COLOR_BLUE</Name>
-    <Value>4.000000000</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -57,5 +57,40 @@
 <Widget>
     <Kind>2</Kind>
     <Name>RECORD</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>fxaa</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>bloom</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>dof</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>kaleidoscope</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>noisewarp</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>pixelate</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>edge</Name>
     <Value>0</Value>
 </Widget>
