@@ -123,8 +123,8 @@ void testApp::trackUpdated(ofxDurationEventArgs& args){
     }
     else if(args.track->name=="/AUTO_EMITT")
     {
-        autoEmitt = args.track->on;
-		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->on);
+        autoEmitt = !autoEmitt;
+		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(autoEmitt);
     }
     else if(args.track->name=="/RECORD")	
     {

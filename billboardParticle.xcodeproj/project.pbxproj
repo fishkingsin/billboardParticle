@@ -24,7 +24,6 @@
 		1BBBB0C616D729FA0030D3CA /* EdgePass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0B116D729FA0030D3CA /* EdgePass.cpp */; };
 		1BBBB0C716D729FA0030D3CA /* FxaaPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0B316D729FA0030D3CA /* FxaaPass.cpp */; };
 		1BBBB0C816D729FA0030D3CA /* KaleidoscopePass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0B516D729FA0030D3CA /* KaleidoscopePass.cpp */; };
-		1BBBB0C916D729FA0030D3CA /* LUTPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0B716D729FA0030D3CA /* LUTPass.cpp */; };
 		1BBBB0CA16D729FA0030D3CA /* NoiseWarpPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0B916D729FA0030D3CA /* NoiseWarpPass.cpp */; };
 		1BBBB0CB16D729FA0030D3CA /* PixelatePass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0BC16D729FA0030D3CA /* PixelatePass.cpp */; };
 		1BBBB0CC16D729FA0030D3CA /* PostProcessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BBBB0BE16D729FA0030D3CA /* PostProcessing.cpp */; };
@@ -143,8 +142,6 @@
 		1BBBB0B416D729FA0030D3CA /* FxaaPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FxaaPass.h; sourceTree = "<group>"; };
 		1BBBB0B516D729FA0030D3CA /* KaleidoscopePass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KaleidoscopePass.cpp; sourceTree = "<group>"; };
 		1BBBB0B616D729FA0030D3CA /* KaleidoscopePass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KaleidoscopePass.h; sourceTree = "<group>"; };
-		1BBBB0B716D729FA0030D3CA /* LUTPass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LUTPass.cpp; sourceTree = "<group>"; };
-		1BBBB0B816D729FA0030D3CA /* LUTPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUTPass.h; sourceTree = "<group>"; };
 		1BBBB0B916D729FA0030D3CA /* NoiseWarpPass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NoiseWarpPass.cpp; sourceTree = "<group>"; };
 		1BBBB0BA16D729FA0030D3CA /* NoiseWarpPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoiseWarpPass.h; sourceTree = "<group>"; };
 		1BBBB0BB16D729FA0030D3CA /* ofxPostProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPostProcessing.h; sourceTree = "<group>"; };
@@ -404,8 +401,6 @@
 				1BBBB0B416D729FA0030D3CA /* FxaaPass.h */,
 				1BBBB0B516D729FA0030D3CA /* KaleidoscopePass.cpp */,
 				1BBBB0B616D729FA0030D3CA /* KaleidoscopePass.h */,
-				1BBBB0B716D729FA0030D3CA /* LUTPass.cpp */,
-				1BBBB0B816D729FA0030D3CA /* LUTPass.h */,
 				1BBBB0B916D729FA0030D3CA /* NoiseWarpPass.cpp */,
 				1BBBB0BA16D729FA0030D3CA /* NoiseWarpPass.h */,
 				1BBBB0BB16D729FA0030D3CA /* ofxPostProcessing.h */,
@@ -805,7 +800,6 @@
 				1BBBB0C616D729FA0030D3CA /* EdgePass.cpp in Sources */,
 				1BBBB0C716D729FA0030D3CA /* FxaaPass.cpp in Sources */,
 				1BBBB0C816D729FA0030D3CA /* KaleidoscopePass.cpp in Sources */,
-				1BBBB0C916D729FA0030D3CA /* LUTPass.cpp in Sources */,
 				1BBBB0CA16D729FA0030D3CA /* NoiseWarpPass.cpp in Sources */,
 				1BBBB0CB16D729FA0030D3CA /* PixelatePass.cpp in Sources */,
 				1BBBB0CC16D729FA0030D3CA /* PostProcessing.cpp in Sources */,
