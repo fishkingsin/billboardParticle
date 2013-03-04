@@ -42,27 +42,27 @@
             <max>100.000000000</max>
         </track>
         <track>
-            <type>Bangs</type>
-            <xmlFileName>bangs_.xml</xmlFileName>
-            <trackName>bangs</trackName>
-            <displayName>AUTO_EMITT</displayName>
-            <sendOSC>1</sendOSC>
-            <receiveOSC>1</receiveOSC>
-        </track>
-        <track>
             <type>Audio</type>
             <xmlFileName></xmlFileName>
             <trackName>audio</trackName>
             <displayName>audio</displayName>
             <sendOSC>0</sendOSC>
             <receiveOSC>0</receiveOSC>
-            <clip>/Users/jameskong/openframework/of_v0073_osx_release/apps/myApps/billboardParticle/bin/data/02 Pruitt Igoe</clip>
+            <clip>/Users/jameskong/openframework/of_v0073_osx_release/apps/myApps/billboardParticle/bin/data/02 Pruitt Igoe.aif</clip>
+        </track>
+        <track>
+            <type>Flags</type>
+            <xmlFileName>flags_.xml</xmlFileName>
+            <trackName>flags</trackName>
+            <displayName>AUTO_EMITT</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
         </track>
     </page>
 </tracks>
 <timelineSettings>
     <duration>00:05:39:406</duration>
-    <playhead>00:00:03:877</playhead>
+    <playhead>00:05:39:406</playhead>
     <inpoint>00:00:00:000</inpoint>
     <outpoint>00:05:39:406</outpoint>
     <loop>0</loop>

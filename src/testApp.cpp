@@ -123,7 +123,25 @@ void testApp::trackUpdated(ofxDurationEventArgs& args){
     }
     else if(args.track->name=="/AUTO_EMITT")
     {
-        autoEmitt = !autoEmitt;
+        if(args.track->flag=="ON")
+        {
+            autoEmitt = true;
+        }
+        else if(args.track->flag=="OFF")
+        {
+            autoEmitt = false;
+        }
+        if(args.track->flag=="RECORD")
+        {
+            bRecord = true;
+            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
+        }
+        else if(args.track->flag=="STOP")
+        {
+            bRecord = false;
+            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
+        }
+        
 		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(autoEmitt);
     }
     else if(args.track->name=="/RECORD")	
@@ -357,6 +375,7 @@ void testApp::draw() {
     ofDisablePointSprites();
     
     billboardShader.end();
+    if(autoEmitt)
         emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
 //    ofPopMatrix();
 	post.end();

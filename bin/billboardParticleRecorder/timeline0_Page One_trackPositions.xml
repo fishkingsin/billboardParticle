@@ -21,23 +21,23 @@
         <x>0.000000000</x>
         <y>206.000000000</y>
         <width>1280.000000000</width>
-        <height>41.000000000</height>
+        <height>50.000000000</height>
     </element>
     <element name="curves_0">
         <x>0.000000000</x>
-        <y>271.000000000</y>
+        <y>280.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="curves_1">
         <x>0.000000000</x>
-        <y>335.000000000</y>
+        <y>344.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="curves_2">
         <x>0.000000000</x>
-        <y>399.000000000</y>
+        <y>408.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -67,7 +67,7 @@
     </element>
     <element name="flags">
         <x>0.000000000</x>
-        <y>399.000000000</y>
+        <y>472.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
