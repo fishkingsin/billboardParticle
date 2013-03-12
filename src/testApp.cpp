@@ -46,7 +46,7 @@ void testApp::setup() {
 	texture.loadImage("dot.png");
 	ofEnableAlphaBlending();
     past = ofGetElapsedTimef();
-    //    fbo.allocate(ofGetWidth(), ofGetHeight() , GL_RGBA);
+
     emitter.set(0, 0);
     emitterTex.loadImage("emitter.png");
     
@@ -338,35 +338,17 @@ void testApp::update() {
     }
     pEmitter = emitter;
     past = cur;
-    
-}
-
-//--------------------------------------------------------------
-void testApp::draw() {
-//	fbo.begin();
-	ofClear(0);
+post.begin(cam);
+	glClear(GL_DEPTH_BUFFER_BIT);
     ofBackground(bgColor);
     
     ofEnableBlendMode(OF_BLENDMODE_ADD);
-    //	ofBackgroundGradient(ofColor(255), ofColor(230, 240, 255));
-    //	ofBackground(0);
-    //	string info = ofToString(ofGetFrameRate(), 2)+"\n";
-    //	info += "Particle Count: "+ofToString(NUM_BILLBOARDS);
-    //	ofDrawBitmapStringHighlight(info, 30, 30);
     
     ofSetColor(255);
     
 	
-	post.begin(cam);
-//    ofPushMatrix();
-//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
-//    ofRotate(cameraRotation.x, 1, 0, 0);
-//    ofRotate(cameraRotation.y, 0, 1, 0);
-//    ofRotate(cameraRotation.y, 0, 0, 1);
-    
-    // bind the shader so that wee can change the
-    // size of the points via the vert shader
-    billboardShader.begin();
+	
+	 billboardShader.begin();
     
     ofEnablePointSprites();
     texture.getTextureReference().bind();
@@ -377,10 +359,15 @@ void testApp::draw() {
     billboardShader.end();
     if(autoEmitt)
         emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
-//    ofPopMatrix();
+
 	post.end();
-//	fbo.end();
-//	fbo.draw(0, 0);
+
+}
+
+//--------------------------------------------------------------
+void testApp::draw() {
+
+	post.draw(0, 0);
     if(bRecord)
         server.publishTexture(&post.getProcessedTextureReference());
     //    gui->draw();

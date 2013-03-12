@@ -60,8 +60,9 @@ public:
 	ofEasyCam cam;
 	#ifdef USE_SYPHON
 	ofxSyphonServer server;
-//	ofFbo fbo;
+
 #endif
+
 };
 
 
