@@ -49,10 +49,10 @@ public:
     ofxUICanvas *gui;
     
 //    gui variable
-    float noiseStrength,noisePower,aging,colorChange,particleSizeMax, particleSizeMin;
+    float noiseStrength,noisePower,aging,particleSizeMax, particleSizeMin;// , randomColor;
     float noiseEmitterStrength;
-    bool autoEmitt,bRecord;
-    ofColor bgColor;
+    bool autoEmitt,bRecord;//,bRandomColor;
+    ofColor bgColor,colorChange;
 	ofxDuration duration;
 	void trackUpdated(ofxDurationEventArgs& args);
 	

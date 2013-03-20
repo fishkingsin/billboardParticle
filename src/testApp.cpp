@@ -4,11 +4,11 @@
 void testApp::setup() {
 #ifdef USE_SYPHON
 	server.setName("billboardParticle");
-//	fbo.allocate(1024,768);
+    //	fbo.allocate(1024,768);
 #endif
     ofSetBackgroundAuto(false);
     ofSetFrameRate(60);
-//	ofSetLogLevel(OF_LOG_VERBOSE);
+    //	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofBackground(0, 0, 0);
 	
 	cameraRotation.set(0);
@@ -46,7 +46,7 @@ void testApp::setup() {
 	texture.loadImage("dot.png");
 	ofEnableAlphaBlending();
     past = ofGetElapsedTimef();
-
+    
     emitter.set(0, 0);
     emitterTex.loadImage("emitter.png");
     
@@ -64,7 +64,11 @@ void testApp::setup() {
     gui->addSlider("NOISE_STRENGTH", 0.0, 1.0f, noiseStrength, length-xInit, dim);
     gui->addSlider("NOISE_POWER", 0.0, 1.0f, noisePower, length-xInit, dim);
     gui->addSlider("AGING", 0.0, 1.0f ,  aging, length-xInit, dim);
-    gui->addSlider("COLOR_CHANGE", 0.0, 2000.0f ,  colorChange, length-xInit, dim);
+    gui->addSlider("PCOLOR_RED", 0.0f, 255.0f, colorChange.r, length-xInit, dim);
+    gui->addSlider("PCOLOR_GREEN", 0.0f, 255.0f, colorChange.g, length-xInit, dim);
+    gui->addSlider("PCOLOR_BLUE", 0.0f, 255.0f, colorChange.b, length-xInit, dim);
+    
+    //    gui->addSlider("COLOR_CHANGE", 0.0, 2000.0f ,  colorChange, length-xInit, dim);
     gui->addSlider("EMITTER_NOISE_STRENGTH", 0.0, ofGetWidth() ,  ofGetWidth()*0.5, length-xInit, dim);
     
     gui->addRangeSlider("PARTICLE_SIZE", 0.0, 255.0, 50.0, 100.0, length-xInit,dim);
@@ -84,14 +88,14 @@ void testApp::setup() {
     post.createPass<PixelatePass>()->setEnabled(false);
     post.createPass<EdgePass>()->setEnabled(false);
 	ofxUILabel * lable = new ofxUILabel("SHADER",OFX_UI_FONT_LARGE);
-//	gui->addWidgetEastOf (new ofxUISpacer(ofGetWidth()*0.25,0,ofGetWidth()*0.25,100,"SPACER"), "NOISE_STRENGTH");
+    //	gui->addWidgetEastOf (new ofxUISpacer(ofGetWidth()*0.25,0,ofGetWidth()*0.25,100,"SPACER"), "NOISE_STRENGTH");
 	gui->addWidgetEastOf (lable,"NOISE_STRENGTH");
 	for (unsigned i = 0; i < post.size(); ++i)
     {
-//        gui->addWidgetDown();
+        //        gui->addWidgetDown();
 		gui->addWidgetPosition(new ofxUILabelToggle(post[i]->getName(), false, length-xInit),
-						  OFX_UI_WIDGET_POSITION_DOWN,
-						  OFX_UI_ALIGN_RIGHT,
+                               OFX_UI_WIDGET_POSITION_DOWN,
+                               OFX_UI_ALIGN_RIGHT,
 							   false);
 	}
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
@@ -100,7 +104,7 @@ void testApp::setup() {
 	duration.setup(12345);
 	ofAddListener(duration.events.trackUpdated, this, &testApp::trackUpdated);
 	
-
+    
 }
 //--------------------------------------------------------------
 //Or wait to receive messages, sent only when the track changed
@@ -123,38 +127,42 @@ void testApp::trackUpdated(ofxDurationEventArgs& args){
     }
     else if(args.track->name=="/AUTO_EMITT")
     {
-        if(args.track->flag=="ON")
-        {
-            autoEmitt = true;
-        }
-        else if(args.track->flag=="OFF")
-        {
-            autoEmitt = false;
-        }
-        if(args.track->flag=="RECORD")
-        {
-            bRecord = true;
-            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
-        }
-        else if(args.track->flag=="STOP")
-        {
-            bRecord = false;
-            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
-        }
+        autoEmitt = args.track->on;
+        //        if(args.track->flag=="ON")
+        //        {
+        //            autoEmitt = true;
+        //        }
+        //        else if(args.track->flag=="OFF")
+        //        {
+        //            autoEmitt = false;
+        //        }
+        //        if(args.track->flag=="RECORD")
+        //        {
+        //            bRecord = true;
+        //            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
+        //        }
+        //        else if(args.track->flag=="STOP")
+        //        {
+        //            bRecord = false;
+        //            ((ofxUIToggle*)gui->getWidget("RECORD"))->setValue(bRecord);
+        //        }
         
 		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(autoEmitt);
     }
-    else if(args.track->name=="/RECORD")	
+    else if(args.track->name=="/RECORD")
     {
         bRecord = args.track->on;
 		((ofxUIToggle*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->on);
     }
-    
-    else if(args.track->name=="/COLOR_CHANGE")
+    else if(args.track->name=="/COLOR")
     {
-        colorChange = args.track->value;
-		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+        colorChange = args.track->color;
     }
+    //    else if(args.track->name=="/COLOR_CHANGE")
+    //    {
+    //        colorChange = args.track->value;
+    //		((ofxUISlider*)gui->getWidget(args.track->name.substr(1,string::npos)))->setValue(args.track->value);
+    //    }
     
     else if(args.track->name=="/PARTICLE_SIZE_MAX")
     {
@@ -185,6 +193,16 @@ void testApp::trackUpdated(ofxDurationEventArgs& args){
 		((ofxUISlider*)gui->getWidget("BG_COLOR_ALPHA"))->setValue(bgColor.a);
 		
 	}
+    //    else if(args.track->name=="/RANDOM")
+    //    {
+    //        randomColor = args.track->value;
+    //    }
+    //    else if(args.track->name=="/RANDOM_COLOR")
+    //	{
+    //		bRandomColor = args.track->on;
+    //
+    //	}
+    
 	else if(args.track->name=="/BG_COLOR_ALPHA")
 	{
 		bgColor.a = args.track->value;
@@ -222,11 +240,22 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
         bRecord = ((ofxUIToggle*)e.widget)->getValue();
     }
-    
-    else if(e.widget->getName()=="COLOR_CHANGE")
+    else if(e.widget->getName()=="PCOLOR_RED")
     {
-        colorChange = ((ofxUISlider*)e.widget)->getScaledValue();
+        colorChange.r = ((ofxUISlider*)e.widget)->getScaledValue();
     }
+    else if(e.widget->getName()=="PCOLOR_GREEN")
+    {
+        colorChange.g = ((ofxUISlider*)e.widget)->getScaledValue();
+    }
+    else if(e.widget->getName()=="PCOLOR_BLUE")
+    {
+        colorChange.b = ((ofxUISlider*)e.widget)->getScaledValue();
+    }
+    //    else if(e.widget->getName()=="randomColor")
+    //    {
+    //        randomColor = ((ofxUISlider*)e.widget)->getScaledValue();
+    //    }
     
     else if(e.widget->getName()=="PARTICLE_SIZE")
     {
@@ -236,12 +265,12 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     else if(e.widget->getName()=="EMITTER_NOISE_STRENGTH")
     {
         noiseEmitterStrength = ((ofxUISlider*)e.widget)->getScaledValue();
-
+        
     }
 	else if(e.widget->getName()=="BG_COLOR_RED")
 	{
 		bgColor.r = ((ofxUISlider*)e.widget)->getScaledValue();
-
+        
 	}
 	else if(e.widget->getName()=="BG_COLOR_BLUE")
 	{
@@ -261,7 +290,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	else {
 		for (unsigned i = 0; i < post.size(); ++i)
 		{
-    
+            
 			if(post[i]->getName()==e.widget->getName())
 			{
 				post[i]->setEnabled(((ofxUIToggle*)e.widget)->getValue());
@@ -278,27 +307,27 @@ void testApp::update() {
 	float div = 250.0;
 	float cur = ofGetElapsedTimef();
     ofVec3f v (ofSignedNoise(t, emitter.y/ofGetHeight()*0.5)*noiseEmitterStrength,ofSignedNoise(emitter.x/ofGetWidth()*0.5, t)*noiseEmitterStrength);
-//	ofVec3f v(ofSignedNoise(t,ofGetWidth()*0.5), ofSignedNoise(ofGetHeight()*0.5, t));
-
+    //	ofVec3f v(ofSignedNoise(t,ofGetWidth()*0.5), ofSignedNoise(ofGetHeight()*0.5, t));
+    
     emitter+=(v-emitter)*0.01;
     if(emitter.x < -(particleSizeMax*0.5)-ofGetWidth()*0.5)
     {
-//        emitter-=v*2;
+        //        emitter-=v*2;
         emitter.x = ofGetWidth()*0.5;
         
     }else if(emitter.y < -(particleSizeMax*0.5)-ofGetHeight()*0.5)
     {
-//        emitter-=v*2;
+        //        emitter-=v*2;
         emitter.y = ofGetHeight()*0.5;
         
     }else if(emitter.x > -(particleSizeMax*0.5)+ofGetWidth()*0.5)
     {
-//        emitter-=v*2;
+        //        emitter-=v*2;
         emitter.x = -ofGetWidth()*0.5;
         
     }else if(emitter.y > -(particleSizeMax*0.5)+ofGetHeight()*0.5)
     {
-//        emitter-=v*2;
+        //        emitter-=v*2;
         emitter.y = -ofGetHeight()*0.5;
     }
     
@@ -315,7 +344,7 @@ void testApp::update() {
             billboardVels[i] += vec;
             billboards.getVertices()[i] += billboardVels[i];
             billboardVels[i] *= 0.99f;
-//			billboards.setNormal(i,billboards.getNormal(i)*age[i]);//+ billboardSizeTarget[i] * ofNoise(t+i),0,0));
+            //			billboards.setNormal(i,billboards.getNormal(i)*age[i]);//+ billboardSizeTarget[i] * ofNoise(t+i),0,0));
 			billboards.setNormal(i,billboardNormal[i]*age[i]);
             billboards.getColors()[i].set(ofColor(billboards.getColors()[i],age[i]*255));
             
@@ -329,16 +358,23 @@ void testApp::update() {
                 billboardVels[i].set(ofRandom(emitter.x-pEmitter.x), ofRandom(emitter.y-pEmitter.y) , ofRandom(-10,10) );
                 billboards.getVertices()[i].set(emitter.x+particleSizeMax*0.5,emitter.y+particleSizeMax*0.5,0);
                 age[i]= ofRandom(0.1,1.0);
-                billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*colorChange)%255, 255, 255,age[i]*255));
+                //                if(!bRandomColor)
+                //                {
+                billboards.getColors()[i].set(colorChange);
+                //                }
+                //                else
+                //                {
+                //                    billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*randomColor)%255, 255, 255,age[i]*255));
+                //                }
 				billboardNormal[i]= ofVec3f(ofRandom(particleSizeMin, particleSizeMax));
 				billboards.setNormal(i,billboardNormal[i]);
-
+                
             }
         }
     }
     pEmitter = emitter;
     past = cur;
-post.begin(cam);
+    post.begin(cam);
 	glClear(GL_DEPTH_BUFFER_BIT);
     ofBackground(bgColor);
     
@@ -348,7 +384,7 @@ post.begin(cam);
     
 	
 	
-	 billboardShader.begin();
+    billboardShader.begin();
     
     ofEnablePointSprites();
     texture.getTextureReference().bind();
@@ -357,16 +393,16 @@ post.begin(cam);
     ofDisablePointSprites();
     
     billboardShader.end();
-    if(autoEmitt)
-        emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
-
+    //    if(autoEmitt)
+    emitterTex.draw(emitter,particleSizeMax,particleSizeMax);
+    
 	post.end();
-
+    
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
-
+    ofBackground(0);
 	post.draw(0, 0);
     if(bRecord)
         server.publishTexture(&post.getProcessedTextureReference());
@@ -383,7 +419,7 @@ void testApp::keyPressed(int key){
     if(key == '\t')
 	{
 		gui->toggleVisible();
-
+        
 	}
     if(key == 'a')autoEmitt = !autoEmitt;
 	unsigned idx = key - '0';
@@ -415,7 +451,14 @@ void testApp::mouseDragged(int x, int y, int button){
             
             billboardVels[i].set(ofRandom(x-pX), ofRandom(y-pY) , ofRandom(-10,10) );
             billboards.getVertices()[i].set(mouseX-ofGetWidth()*0.5,mouseY-ofGetHeight()*0.5,0);
-            billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*colorChange)%255, 255, 255,age            [i]*255));
+            //            if(!bRandomColor)
+            //            {
+            billboards.getColors()[i].set(colorChange);
+            //            }
+            //            else
+            //            {
+            //            billboards.getColors()[i].set(ofColor::fromHsb(int(billboards.getColors()[i].getHue()+ofGetElapsedTimef()*randomColor)%255, 255, 255,age            [i]*255));
+            //            }
             age[i]= ofRandom(0.1,1.0);
             billboardNormal[i]= ofVec3f(ofRandom(particleSizeMin, particleSizeMax));
 			billboards.setNormal(i,billboardNormal[i]);

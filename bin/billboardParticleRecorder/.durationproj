@@ -32,14 +32,37 @@
             <max>1.000000000</max>
         </track>
         <track>
-            <type>Curves</type>
-            <xmlFileName>curves_2_.xml</xmlFileName>
-            <trackName>curves_2</trackName>
-            <displayName>COLOR_CHANGE</displayName>
+            <type>Colors</type>
+            <xmlFileName>colors_.xml</xmlFileName>
+            <trackName>colors</trackName>
+            <displayName>COLOR</displayName>
             <sendOSC>1</sendOSC>
-            <receiveOSC>1</receiveOSC>
-            <min>0.000000000</min>
-            <max>100.000000000</max>
+            <receiveOSC>0</receiveOSC>
+            <palette>defaultColorPalette.png</palette>
+        </track>
+        <track>
+            <type>Switches</type>
+            <xmlFileName>switches_.xml</xmlFileName>
+            <trackName>switches</trackName>
+            <displayName>COLOR_BY_TRACK</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+        </track>
+        <track>
+            <type>Switches</type>
+            <xmlFileName>switches_0_.xml</xmlFileName>
+            <trackName>switches_0</trackName>
+            <displayName>AUTO_EMITT</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+        </track>
+        <track>
+            <type>Switches</type>
+            <xmlFileName>switches_1_.xml</xmlFileName>
+            <trackName>switches_1</trackName>
+            <displayName>RANDOM_COLOR</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
         </track>
         <track>
             <type>Audio</type>
@@ -48,23 +71,15 @@
             <displayName>audio</displayName>
             <sendOSC>0</sendOSC>
             <receiveOSC>0</receiveOSC>
-            <clip>/Users/jameskong/openframework/of_v0073_osx_release/apps/myApps/billboardParticle/bin/data/02 Pruitt Igoe.aif</clip>
-        </track>
-        <track>
-            <type>Flags</type>
-            <xmlFileName>flags_.xml</xmlFileName>
-            <trackName>flags</trackName>
-            <displayName>AUTO_EMITT</displayName>
-            <sendOSC>1</sendOSC>
-            <receiveOSC>0</receiveOSC>
+            <clip>/Users/jameskong/openframework/of_v0073_osx_release/apps/myApps/billboardParticle/bin/data/cw2 ming pak .aif</clip>
         </track>
     </page>
 </tracks>
 <timelineSettings>
-    <duration>00:05:39:406</duration>
-    <playhead>00:05:39:406</playhead>
-    <inpoint>00:00:00:000</inpoint>
-    <outpoint>00:05:39:406</outpoint>
+    <duration>00:12:14:678</duration>
+    <playhead>00:07:50:139</playhead>
+    <inpoint>00:03:30:219</inpoint>
+    <outpoint>00:07:37:415</outpoint>
     <loop>0</loop>
 </timelineSettings>
 <projectSettings>
